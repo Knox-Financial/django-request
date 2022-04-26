@@ -1,3 +1,6 @@
+FORKED FROM https://github.com/django-request/django-request
+=======
+
 django-request
 ==============
 
