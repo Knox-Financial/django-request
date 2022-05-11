@@ -16,16 +16,20 @@ class RequestMiddleware(MiddlewareMixin):
 
         if request.method.lower() not in settings.VALID_METHOD_NAMES:
             return response
-        
+
         if response.status_code < 400 and settings.ONLY_ERRORS:
             r = Request.objects.first()
             if r:
                 r.delete()
-                
+
             return response
 
         ignore = Patterns(False, *settings.IGNORE_PATHS)
         if ignore.resolve(request.path[1:]):
+            return response
+
+        include = Patterns(False, *settings.INCLUDE_PATHS)
+        if not include.resolve(request.path[1:]):
             return response
 
         if request_is_ajax(request) and settings.IGNORE_AJAX:
@@ -58,7 +62,6 @@ class RequestMiddleware(MiddlewareMixin):
                 r.save()
         return response
 
-
     def process_view(self, request, view_func, *view_args, **view_kwargs):
 
         if request.method.lower() not in settings.VALID_METHOD_NAMES:
@@ -76,6 +79,10 @@ class RequestMiddleware(MiddlewareMixin):
 
         ignore = Patterns(False, *settings.IGNORE_USER_AGENTS)
         if ignore.resolve(request.META.get('HTTP_USER_AGENT', '')):
+            return None
+
+        include = Patterns(False, *settings.INCLUDE_PATHS)
+        if not include.resolve(request.path[1:]):
             return None
 
         if getattr(request, 'user', False):

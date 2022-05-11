@@ -15,6 +15,7 @@ ANONYMOUS_IP = getattr(settings, 'REQUEST_ANONYMOUS_IP', False)
 LOG_USER = getattr(settings, 'REQUEST_LOG_USER', True)
 IGNORE_USERNAME = getattr(settings, 'REQUEST_IGNORE_USERNAME', tuple())
 IGNORE_PATHS = getattr(settings, 'REQUEST_IGNORE_PATHS', tuple())
+INCLUDE_PATHS = getattr(settings, 'REQUEST_INCLUDE_PATHS', tuple())
 IGNORE_USER_AGENTS = getattr(settings, 'REQUEST_IGNORE_USER_AGENTS', tuple())
 
 TRAFFIC_MODULES = getattr(settings, 'REQUEST_TRAFFIC_MODULES', (
